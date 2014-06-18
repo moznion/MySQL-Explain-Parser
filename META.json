@@ -1,5 +1,5 @@
 {
-   "abstract" : "It's new $module",
+   "abstract" : "Parser for result of EXPLAIN of MySQL",
    "author" : [
       "moznion <moznion@gmail.com>"
    ],
@@ -52,6 +52,17 @@
       }
    },
    "release_status" : "unstable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/moznion/MySQL-Explain-Parser/issues"
+      },
+      "homepage" : "https://github.com/moznion/MySQL-Explain-Parser",
+      "repository" : {
+         "type" : "git",
+         "url" : "git://github.com/moznion/MySQL-Explain-Parser.git",
+         "web" : "https://github.com/moznion/MySQL-Explain-Parser"
+      }
+   },
    "version" : "0.01",
    "x_authority" : "cpan:MOZNION"
 }

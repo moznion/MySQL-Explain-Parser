@@ -2,6 +2,7 @@ package MySQL::Explain::Parser;
 use 5.008005;
 use strict;
 use warnings;
+use utf8;
 use parent "Exporter";
 
 our $VERSION = "0.01";
@@ -26,14 +27,14 @@ sub parse {
     my $num_of_indexes = scalar @indexes;
     for my $row (@rows) {
         my %parsed;
-        my $begin = 0;
+        my $begin_pos = 0;
         for (my $i = 0; $i < $num_of_indexes; $i++) {
-            my $range = $indexes_length[$i];
-            my ($item) = substr($row, $begin + 1, $range) =~ /\A\s*(.*?)\s*\Z/;
+            my $length = $indexes_length[$i];
+            my ($item) = substr($row, $begin_pos + 1, $length) =~ /\A\s*(.*?)\s*\Z/;
 
-            $begin += $range + 1;
+            $begin_pos += $length + 1;
 
-            $parsed{$indexes[$i]} = $item eq "NULL" ? undef : $item;
+            $parsed{$indexes[$i]} = $item eq 'NULL' ? undef : $item;
         }
         push @parsed, \%parsed;
     }
@@ -48,15 +49,68 @@ __END__
 
 =head1 NAME
 
-MySQL::Explain::Parser - It's new $module
+MySQL::Explain::Parser - Parser for result of EXPLAIN of MySQL
 
 =head1 SYNOPSIS
 
-    use MySQL::Explain::Parser;
+    use utf8;
+    use MySQL::Explain::Parser qw/parse/;
+
+    my $explain = <<'...';
+    +----+-------------+------------+--------+---------------+---------+---------+----------------+------+-------------+
+    | id | select_type | table      | type   | possible_keys | key     | key_len | ref            | rows | Extra       |
+    +----+-------------+------------+--------+---------------+---------+---------+----------------+------+-------------+
+    |  1 | PRIMARY     | Country    | eq_ref | PRIMARY       | PRIMARY | 3       | C1.CountryCode |    1 |             |
+    |  2 | DERIVED     | City       | ALL    | NULL          | NULL    | NULL    | NULL           | 4079 | Using where |
+    +----+-------------+------------+--------+---------------+---------+---------+----------------+------+-------------+
+    ...
+
+    my $parsed = parse($explain);
+    # =>
+    #    [
+    #        {
+    #            id            => 1,
+    #            select_type   => 'PRIMARY',
+    #            table         => 'Country',
+    #            type          => 'eq_ref',
+    #            possible_keys => 'PRIMARY',
+    #            key           => 'PRIMARY',
+    #            key_len       => 3,
+    #            ref           => 'C1.CountryCode',
+    #            rows          => 1,
+    #            Extra         => '',
+    #        },
+    #        {
+    #            id            => 2,
+    #            select_type   => 'DERIVED',
+    #            table         => 'City',
+    #            type          => 'ALL',
+    #            possible_keys => undef,
+    #            key           => undef,
+    #            key_len       => undef,
+    #            ref           => undef,
+    #            rows          => 4079,
+    #            Extra         => 'Using where',
+    #        },
+    #    ]
+]
 
 =head1 DESCRIPTION
 
-MySQL::Explain::Parser is ...
+MySQL::Explain::Parser is the parser for result of EXPLAIN of MySQL.
+
+This module provides C<parse()> function.
+This function receives the result of EXPLAIN, and returns the parsed result as array reference that contains hash reference.
+
+=head1 FUNCTIONS
+
+=over 4
+
+=item * parse($explain : Str)
+
+Returns the parsed result of EXPLAIN as ArrayRef[HashRef]. This function can be exported.
+
+=back
 
 =head1 LICENSE
 
