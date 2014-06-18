@@ -144,7 +144,6 @@ MySQL::Explain::Parser - Parser for result of EXPLAIN of MySQL
     #            'Extra'         => 'Using index',
     #        }
     #    ]
-]
 
 =head1 DESCRIPTION
 
@@ -172,6 +171,9 @@ Returns the parsed result of EXPLAIN EXTENDED as ArrayRef[HashRef]. This functio
 Please refer to the following page to get information about format of EXPLAIN EXTENDED result: L<http://dev.mysql.com/doc/refman/5.6/en/explain-extended.html>
 
 e.g.
+
+    use utf8;
+    use MySQL::Explain::Parser qw/parse_extended/;
 
     my $explain = <<'...';
     *************************** 1. row ***************************

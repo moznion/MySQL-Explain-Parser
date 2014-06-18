@@ -47,7 +47,6 @@ MySQL::Explain::Parser - Parser for result of EXPLAIN of MySQL
     #            'Extra'         => 'Using index',
     #        }
     #    ]
-]
 
 # DESCRIPTION
 
@@ -73,6 +72,9 @@ This module treat SQL's `NULL` as Perl's `undef`.
     Please refer to the following page to get information about format of EXPLAIN EXTENDED result: [http://dev.mysql.com/doc/refman/5.6/en/explain-extended.html](http://dev.mysql.com/doc/refman/5.6/en/explain-extended.html)
 
     e.g.
+
+        use utf8;
+        use MySQL::Explain::Parser qw/parse_extended/;
 
         my $explain = <<'...';
         *************************** 1. row ***************************
