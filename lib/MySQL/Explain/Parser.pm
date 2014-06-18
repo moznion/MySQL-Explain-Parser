@@ -6,7 +6,7 @@ use utf8;
 use parent "Exporter";
 
 our $VERSION = "0.01";
-our @EXPORT_OK = qw/parse/;
+our @EXPORT_OK = qw/parse parse_extended/;
 
 sub parse {
     my ($explain) = @_;
@@ -40,6 +40,47 @@ sub parse {
     }
 
     return \@parsed;
+}
+
+sub parse_extended {
+    my ($explain) = @_;
+
+    my @parsed;
+    my @explains;
+    my @rows = split /\r?\n/, $explain;
+    for my $row (@rows) {
+        if ($row =~ /\A\*+\s\d/) {
+            if (@explains) {
+                push @parsed, _parse_yaml_like(\@explains);
+            }
+            @explains = ();
+            next;
+        }
+
+        $row =~ s/\A\s*//;
+        push @explains, $row;
+    }
+
+    if (@explains) {
+        push @parsed, _parse_yaml_like(\@explains);
+    }
+
+    return \@parsed;
+}
+
+sub _parse_yaml_like {
+    my ($explains) = @_;
+
+    my %parsed;
+    for my $explain (@$explains) {
+        (my $v = $explain) =~ s/\s*?([^:]*):\s*//;
+        my $k = $1;
+        if ($v eq 'NULL') {
+            $v = undef;
+        }
+        $parsed{$k} = $v;
+    }
+    return \%parsed;
 }
 
 1;
