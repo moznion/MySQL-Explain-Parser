@@ -71,5 +71,10 @@ subtest 'should pass if tail of description exists' => sub {
     cmp_deeply($parsed, $expected);
 };
 
+subtest 'should pass if blank lines are on both ends' => sub {
+    my $parsed = parse_extended("\n" . $explain . "\n");
+    cmp_deeply($parsed, $expected);
+};
+
 done_testing;
 

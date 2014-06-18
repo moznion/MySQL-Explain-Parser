@@ -11,7 +11,7 @@ our @EXPORT_OK = qw/parse parse_extended/;
 sub parse {
     my ($explain) = @_;
 
-    my @rows = split /\r?\n/, $explain;
+    my @rows = grep {$_} split /\r?\n/, $explain;
 
     shift @rows; # Skip the top of outline
 
@@ -51,7 +51,7 @@ sub parse_extended {
 
     my @parsed;
     my @explains;
-    my @rows = split /\r?\n/, $explain;
+    my @rows = grep {$_} split /\r?\n/, $explain;
     for my $row (@rows) {
         if ($row =~ /\A\*+\s\d/) {
             if (@explains) {
