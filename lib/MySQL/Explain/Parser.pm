@@ -150,8 +150,8 @@ MySQL::Explain::Parser - Parser for result of EXPLAIN of MySQL
 
 MySQL::Explain::Parser is the parser for result of EXPLAIN of MySQL.
 
-This module provides C<parse()> function.
-This function receives the result of EXPLAIN, and returns the parsed result as array reference that contains hash reference.
+This module provides C<parse()> and C<parse_extended()> function.
+These function receive the result of EXPLAIN or EXPLAIN EXTENDED, and return the parsed result as array reference that contains hash reference.
 
 This module treat SQL's C<NULL> as Perl's C<undef>.
 
@@ -172,6 +172,7 @@ Returns the parsed result of EXPLAIN EXTENDED as ArrayRef[HashRef]. This functio
 Please refer to the following page to get information about format of EXPLAIN EXTENDED result: L<http://dev.mysql.com/doc/refman/5.6/en/explain-extended.html>
 
 e.g.
+
     my $explain = <<'...';
     *************************** 1. row ***************************
                id: 1

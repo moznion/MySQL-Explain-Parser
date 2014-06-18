@@ -53,8 +53,8 @@ MySQL::Explain::Parser - Parser for result of EXPLAIN of MySQL
 
 MySQL::Explain::Parser is the parser for result of EXPLAIN of MySQL.
 
-This module provides `parse()` function.
-This function receives the result of EXPLAIN, and returns the parsed result as array reference that contains hash reference.
+This module provides `parse()` and `parse_extended()` function.
+These function receive the result of EXPLAIN or EXPLAIN EXTENDED, and return the parsed result as array reference that contains hash reference.
 
 This module treat SQL's `NULL` as Perl's `undef`.
 
@@ -73,27 +73,28 @@ This module treat SQL's `NULL` as Perl's `undef`.
     Please refer to the following page to get information about format of EXPLAIN EXTENDED result: [http://dev.mysql.com/doc/refman/5.6/en/explain-extended.html](http://dev.mysql.com/doc/refman/5.6/en/explain-extended.html)
 
     e.g.
+
         my $explain = <<'...';
-        \*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\* 1. row \*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*
+        *************************** 1. row ***************************
                    id: 1
-          select\_type: PRIMARY
+          select_type: PRIMARY
                 table: t1
                  type: index
-        possible\_keys: NULL
+        possible_keys: NULL
                   key: PRIMARY
-              key\_len: 4
+              key_len: 4
                   ref: NULL
                  rows: 4
              filtered: 100.00
                 Extra:
-        \*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\* 2. row \*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*
+        *************************** 2. row ***************************
                    id: 2
-          select\_type: SUBQUERY
+          select_type: SUBQUERY
                 table: t2
                  type: index
-        possible\_keys: a
+        possible_keys: a
                   key: a
-              key\_len: 5
+              key_len: 5
                   ref: NULL
                  rows: 3
              filtered: 100.00
