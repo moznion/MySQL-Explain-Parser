@@ -1,0 +1,6 @@
+name = "MySQL-Explain-Parser"
+badges = ["travis"]
+authority="cpan:MOZNION"
+
+module_maker="ModuleBuildTiny"
+
