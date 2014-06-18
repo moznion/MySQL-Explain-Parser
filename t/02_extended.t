@@ -32,9 +32,7 @@ possible_keys: a
         Extra: Using index
 ...
 
-my $parsed = parse_extended($explain);
-
-cmp_deeply($parsed, [
+my $expected = [
     {
         id            => 1,
         select_type   => 'PRIMARY',
@@ -61,7 +59,17 @@ cmp_deeply($parsed, [
         filtered      => "100.00",
         Extra         => 'Using index',
     },
-]);
+];
+
+subtest 'basic' => sub {
+    my $parsed = parse_extended($explain);
+    cmp_deeply($parsed, $expected);
+};
+
+subtest 'should pass if tail of description exists' => sub {
+    my $parsed = parse_extended($explain . "2 rows in set, 1 warning (0.00 sec)");
+    cmp_deeply($parsed, $expected);
+};
 
 done_testing;
 

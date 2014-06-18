@@ -14,7 +14,11 @@ sub parse {
     my @rows = split /\r?\n/, $explain;
 
     shift @rows; # Skip the top of outline
-    pop @rows; # Skip the bottom of outline
+
+    # Skip bottom unnecessary line(s)
+    if (pop(@rows) =~ /\A\d+\s+rows/) {
+        pop @rows;
+    }
 
     my $index_row = shift @rows;
     my @indexes = grep {$_} split /\|/, $index_row;
@@ -70,6 +74,10 @@ sub parse_extended {
 
 sub _parse_yaml_like {
     my ($explains) = @_;
+
+    if ($explains->[-1] =~ /\A\d+\s+rows/) {
+        pop @$explains;
+    }
 
     my %parsed;
     for my $explain (@$explains) {
