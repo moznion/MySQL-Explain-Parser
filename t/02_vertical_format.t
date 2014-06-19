@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 use utf8;
-use MySQL::Explain::Parser qw/parse_extended/;
+use MySQL::Explain::Parser qw/parse_vertical/;
 use Test::More;
 use Test::Deep;
 
@@ -62,17 +62,17 @@ my $expected = [
 ];
 
 subtest 'basic' => sub {
-    my $parsed = parse_extended($explain);
+    my $parsed = parse_vertical($explain);
     cmp_deeply($parsed, $expected);
 };
 
 subtest 'should pass if tail of description exists' => sub {
-    my $parsed = parse_extended($explain . "2 rows in set, 1 warning (0.00 sec)");
+    my $parsed = parse_vertical($explain . "2 rows in set, 1 warning (0.00 sec)");
     cmp_deeply($parsed, $expected);
 };
 
 subtest 'should pass if blank lines are on both ends' => sub {
-    my $parsed = parse_extended("\n" . $explain . "\n");
+    my $parsed = parse_vertical("\n" . $explain . "\n");
     cmp_deeply($parsed, $expected);
 };
 

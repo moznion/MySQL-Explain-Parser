@@ -52,29 +52,30 @@ MySQL::Explain::Parser - Parser for result of EXPLAIN of MySQL
 
 MySQL::Explain::Parser is the parser for result of EXPLAIN of MySQL.
 
-This module provides `parse()` and `parse_extended()` function.
+This module provides `parse()` and `parse_vertical()` function.
 These function receive the result of EXPLAIN or EXPLAIN EXTENDED, and return the parsed result as array reference that contains hash reference.
 
 This module treat SQL's `NULL` as Perl's `undef`.
 
+Please refer to the following pages to get information about format of EXPLAIN;
+
+- [http://dev.mysql.com/doc/en/explain-output.html](http://dev.mysql.com/doc/en/explain-output.html)
+- [http://dev.mysql.com/doc/en/explain-extended.html](http://dev.mysql.com/doc/en/explain-extended.html)
+
 # FUNCTIONS
 
-- parse($explain : Str)
+- `parse($explain : Str)`
 
     Returns the parsed result of EXPLAIN as ArrayRef\[HashRef\]. This function can be exported.
 
-    Please refer to the following page to get information about format of EXPLAIN result: [http://dev.mysql.com/doc/refman/5.6/en/explain-output.html](http://dev.mysql.com/doc/refman/5.6/en/explain-output.html)
+- `parse_vertical($explain : Str)`
 
-- parse\_extended($explain : Str)
-
-    Returns the parsed result of EXPLAIN EXTENDED as ArrayRef\[HashRef\]. This function can be exported.
-
-    Please refer to the following page to get information about format of EXPLAIN EXTENDED result: [http://dev.mysql.com/doc/refman/5.6/en/explain-extended.html](http://dev.mysql.com/doc/refman/5.6/en/explain-extended.html)
+    Returns the parsed result of EXPLAIN which is formatted vertical as ArrayRef\[HashRef\]. This function can be exported.
 
     e.g.
 
         use utf8;
-        use MySQL::Explain::Parser qw/parse_extended/;
+        use MySQL::Explain::Parser qw/parse_vertical/;
 
         my $explain = <<'...';
         *************************** 1. row ***************************
@@ -103,7 +104,7 @@ This module treat SQL's `NULL` as Perl's `undef`.
                 Extra: Using index
         ...
 
-        my $parsed = parse_extended($explain);
+        my $parsed = parse_vertical($explain);
 
 # LICENSE
 

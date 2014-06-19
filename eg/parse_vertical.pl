@@ -6,7 +6,7 @@ use utf8;
 use FindBin;
 use lib "$FindBin::Bin/../lib";
 use Data::Dumper;
-use MySQL::Explain::Parser qw/parse_extended/;
+use MySQL::Explain::Parser qw/parse_vertical/;
 
 my $explain = <<'...';
 *************************** 1. row ***************************
@@ -35,6 +35,6 @@ possible_keys: a
         Extra: Using index
 ...
 
-my $parsed = parse_extended($explain);
+my $parsed = parse_vertical($explain);
 print Dumper($parsed);
 
