@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use utf8;
 use parent "Exporter";
+use Text::VisualWidth::PP qw/vtrim/;
 
 our $VERSION = "0.01";
 our @EXPORT_OK = qw/parse parse_vertical/;
@@ -34,9 +35,9 @@ sub parse {
         my $begin_pos = 0;
         for (my $i = 0; $i < $num_of_indexes; $i++) {
             my $length = $indexes_length[$i];
-            my ($item) = substr($row, $begin_pos + 1, $length) =~ /\A\s*(.*?)\s*\Z/;
-
-            $begin_pos += $length + 1;
+            my $item = vtrim($row, $length + 1);
+            $row =~ s/\A\Q$item\E//;
+            ($item) = $item =~ /\A\|\s*(.*?)\s*\Z/;
 
             $parsed{$indexes[$i]} = $item eq 'NULL' ? undef : $item;
         }

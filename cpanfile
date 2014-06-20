@@ -1,5 +1,6 @@
 requires 'parent';
 requires 'perl', '5.008005';
+requires 'Text::VisualWidth::PP';
 
 on configure => sub {
     requires 'Module::Build::Tiny', '0.035';
