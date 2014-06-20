@@ -6,7 +6,7 @@ use utf8;
 use parent "Exporter";
 use Text::VisualWidth::PP qw/vtrim/;
 
-our $VERSION = "0.01";
+our $VERSION = "0.02";
 our @EXPORT_OK = qw/parse parse_vertical/;
 
 sub parse {
